@@ -17,8 +17,10 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 
 class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
@@ -34,10 +36,10 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
         hView.findViewById<ComposeView>(R.id.hComposeView)
             .setContent {
                 Column(
-                    modifier = Modifier.border(
-                        border = BorderStroke(1.dp, Color.Black)
-                    )
+                    modifier = Modifier
+                        .border(border = BorderStroke(1.dp, Color.Black))
                         .padding(16.dp)
+
                 ) {
 
                     Text("This is compose inside fragment layout")
@@ -48,6 +50,8 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
                     Spacer(modifier = Modifier.padding(10.dp))
 
 
+                    val hCustomView = HorizontalDottedProgress(AmbientContext.current)
+                    AndroidView(viewBlock = { hCustomView })
                 }
             }
         return hView
