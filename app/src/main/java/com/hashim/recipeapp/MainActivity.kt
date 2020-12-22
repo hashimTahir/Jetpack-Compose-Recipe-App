@@ -6,28 +6,19 @@ package com.hashim.recipeapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.unit.dp
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column(
-                    modifier = Modifier.padding(16.dp)
-            ) {
-                Text(text = "Hey look Some Text")
-                Spacer(modifier = Modifier.padding(top = 10.dp))
-                Button(onClick = {}) {
-                    Text(text = "A Button")
-                }
-            }
+            Image(
+                bitmap = imageFromResource(
+                    res = resources, resId = R.drawable.happy_meal
+                )
+            )
         }
     }
 }
