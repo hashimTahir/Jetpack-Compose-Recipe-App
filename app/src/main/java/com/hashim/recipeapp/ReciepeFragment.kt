@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020/  12/ 22.  Created by Hashim Tahir
+ * Copyright (c) 2020/  12/ 23.  Created by Hashim Tahir
  */
 
 package com.hashim.recipeapp
@@ -24,15 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 
-class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
 
-
+class ReciepeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(
@@ -41,21 +39,16 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Recipe List fragment",
+                        text = "Recipe Fragment",
                         style = TextStyle(
-                            fontSize = TextUnit.Companion.Sp(21)
+                            fontSize = TextUnit.Sp(21)
                         )
                     )
                     Spacer(modifier = Modifier.padding(10.dp))
 
-                    Button(onClick = {
-                        findNavController().navigate(R.id.action_hRecipeListFragment_to_hReciepeFragment)
-                    }) {
-                        Text(text = "To Recipe Fragment")
-
-                    }
                 }
             }
         }
     }
+
 }
