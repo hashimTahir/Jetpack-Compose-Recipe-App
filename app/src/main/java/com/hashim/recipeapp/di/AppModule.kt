@@ -5,6 +5,7 @@
 package com.hashim.recipeapp.di
 
 import android.content.Context
+import com.bumptech.glide.RequestManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hashim.recipeapp.presentation.BaseApplication
@@ -34,5 +35,7 @@ object AppModule {
             .setLenient()
             .create()
     }
+
+
 
 }

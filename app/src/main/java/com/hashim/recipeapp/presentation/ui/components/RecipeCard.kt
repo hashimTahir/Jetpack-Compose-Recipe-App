@@ -13,11 +13,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import com.hashim.recipeapp.R
 import com.hashim.recipeapp.domain.model.Recipe
+import com.hashim.recipeapp.utils.hLoadPicture
 
 @Composable
 fun RecipeCard(
@@ -41,13 +42,21 @@ fun RecipeCard(
     ) {
         Column() {
             recipe.featuredImage?.let { url ->
-                Image(
-                    bitmap = imageResource(id = R.drawable.empty_plate),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .preferredHeight(225.dp),
-                    contentScale = ContentScale.Crop
-                )
+                val hImage = hLoadPicture(
+                    url = url,
+                    defaultImage = R.drawable.empty_plate
+                ).value
+
+                hImage?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .preferredHeight(225.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
             }
             recipe.title?.let { title ->
                 Row(
