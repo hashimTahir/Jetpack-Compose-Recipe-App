@@ -5,12 +5,12 @@
 package com.hashim.recipeapp.network.responses
 
 import com.google.gson.annotations.SerializedName
-import com.hashim.recipeapp.network.model.RecipeNetworkEntity
+import com.hashim.recipeapp.network.model.RecipeDto
 
-class RecipeSearchResponse(
+data class RecipeSearchResponse(
     @SerializedName("count")
     var count: Int,
 
     @SerializedName("results")
-    var recipes: List<RecipeNetworkEntity>
+    var recipes: List<RecipeDto>
 )
