@@ -42,13 +42,13 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
     }
 
 
-    fun hFromEntityList(list: List<RecipeDto>): List<Recipe> {
+    fun hToDomainList(list: List<RecipeDto>): List<Recipe> {
         return list.map {
             hMapToDomainModel(it)
         }
     }
 
-    fun hToEntityList(list: List<Recipe>): List<RecipeDto> {
+    fun hFromDomainList(list: List<Recipe>): List<RecipeDto> {
         return list.map {
             hMapFromDomailModel(it)
         }

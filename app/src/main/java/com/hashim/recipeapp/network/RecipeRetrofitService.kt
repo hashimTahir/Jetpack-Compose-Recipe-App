@@ -14,7 +14,7 @@ interface RecipeRetrofitService {
     @GET("search")
     suspend fun hSearch(
         @Header("Authorization") token: String,
-        @Query("page") page: String,
+        @Query("page") page: Int,
         @Query("query") query: String
     ): RecipeSearchResponse
 
