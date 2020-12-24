@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.TextField
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -44,19 +42,14 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
             setContent {
                 val value = hRecipeListViewModel.hRecipeListMS.value
 
-                /*A Compose and hold a mutable/immutable value with remember keyword
-                * onvaluechange captures that value
-                * but on rotation value restores to default
-                * Putting the value inside view model fixes the issue*/
-                var mutableStateOf = remember { mutableStateOf("Beef") }
+                val query = hRecipeListViewModel.hQuery.value
 
-                Column() {
+                Column {
 
                     TextField(
-                        value = mutableStateOf.value,
-                        onValueChange = {
-                            mutableStateOf.value = it
-
+                        value = query,
+                        onValueChange = { newValue ->
+                            hRecipeListViewModel.hOnQueryChanged(newValue)
                         },
                         modifier = Modifier.fillMaxWidth()
                     )

@@ -37,4 +37,9 @@ class RecipeListViewModel @ViewModelInject constructor(
         }
     }
 
+    fun hOnQueryChanged(query: String) {
+        hQuery.value = query
+
+    }
+
 }
