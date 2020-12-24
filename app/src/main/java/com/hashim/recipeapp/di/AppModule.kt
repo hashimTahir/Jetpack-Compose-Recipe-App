@@ -5,6 +5,8 @@
 package com.hashim.recipeapp.di
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.hashim.recipeapp.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides
@@ -24,7 +26,13 @@ object AppModule {
         return app as BaseApplication
     }
 
-//    @Singleton
-//    @Provides
+    @Singleton
+    @Provides
+    fun hProvidesGson(): Gson {
+        return GsonBuilder()
+            .setPrettyPrinting()
+            .setLenient()
+            .create()
+    }
 
 }

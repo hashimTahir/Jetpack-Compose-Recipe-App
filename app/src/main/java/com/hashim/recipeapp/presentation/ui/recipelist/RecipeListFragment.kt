@@ -26,6 +26,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.hashim.recipeapp.R
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
@@ -33,12 +34,15 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
     val hRecipeListViewModel: RecipeListViewModel by viewModels()
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(

@@ -33,27 +33,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val httpClient = OkHttpClient.Builder()
-
-        httpClient.addInterceptor(logging);
 
 
-        val hRetrofitService = Retrofit.Builder()
-            .baseUrl("https://food2fork.ca/api/recipe/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .client(httpClient.build())
-            .build()
-            .create(RecipeRetrofitService::class.java)
 
-        CoroutineScope(IO).launch {
-            var hRecipe = hRetrofitService.hGet(
-                token = "Token 9c8b06d329136da358c2d00e76946b0111ce2c48",
-                id = 583
-            )
-            var hGson = GsonBuilder().setPrettyPrinting().create()
-            Timber.d("Response %s", hGson.toJson(hRecipe))
-        }
+
+
     }
 }
