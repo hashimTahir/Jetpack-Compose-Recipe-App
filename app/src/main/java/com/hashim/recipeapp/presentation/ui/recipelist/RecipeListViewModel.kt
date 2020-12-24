@@ -20,12 +20,13 @@ class RecipeListViewModel @ViewModelInject constructor(
     private @Named("auth_token") val hToken: String
 ) : ViewModel() {
     val hRecipeListMS: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
-    val hQuery = mutableStateOf("Chicken")
+    val hQuery = mutableStateOf("")
 
     init {
+        hNewSearch(hQuery.value)
     }
 
-     fun hNewSearch(query: String) {
+    fun hNewSearch(query: String) {
         viewModelScope.launch {
             val hSearch = hRecipeRepository.hSearch(
                 token = hToken,
