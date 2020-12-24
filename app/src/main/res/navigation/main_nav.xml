@@ -10,11 +10,11 @@
 
     <fragment
         android:id="@+id/hReciepeFragment"
-        android:name="com.hashim.recipeapp.ReciepeFragment"
+        android:name="com.hashim.recipeapp.presentation.ui.recipe.ReciepeFragment"
         android:label="ReciepeFragment" />
     <fragment
         android:id="@+id/hRecipeListFragment"
-        android:name="com.hashim.recipeapp.RecipeListFragment"
+        android:name="com.hashim.recipeapp.presentation.ui.recipelist.RecipeListFragment"
         android:label="fragment_recipe_list"
         tools:layout="@layout/fragment_recipe_list" >
         <action

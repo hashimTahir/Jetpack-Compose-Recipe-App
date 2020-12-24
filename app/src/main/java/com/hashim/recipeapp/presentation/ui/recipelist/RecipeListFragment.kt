@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2020/  12/ 22.  Created by Hashim Tahir
+ * Copyright (c) 2020/  12/ 24.  Created by Hashim Tahir
  */
 
-package com.hashim.recipeapp
+package com.hashim.recipeapp.presentation.ui.recipelist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,9 +22,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.hashim.recipeapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
+
+    val hRecipeListViewModel: RecipeListViewModel by viewModels()
 
 
     override fun onCreateView(

@@ -1,14 +1,15 @@
 /*
- * Copyright (c) 2020/  12/ 22.  Created by Hashim Tahir
+ * Copyright (c) 2020/  12/ 24.  Created by Hashim Tahir
  */
 
-package com.hashim.recipeapp
+package com.hashim.recipeapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.GsonBuilder
+import com.hashim.recipeapp.R
 import com.hashim.recipeapp.network.RecipeRetrofitService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

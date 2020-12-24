@@ -2,9 +2,11 @@
  * Copyright (c) 2020/  12/ 24.  Created by Hashim Tahir
  */
 
-package com.hashim.recipeapp
+package com.hashim.recipeapp.presentation
 
 import android.app.Application
+import com.hashim.recipeapp.BuildConfig
+import com.hashim.recipeapp.Constants
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

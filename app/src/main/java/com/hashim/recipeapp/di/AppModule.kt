@@ -5,7 +5,7 @@
 package com.hashim.recipeapp.di
 
 import android.content.Context
-import com.hashim.recipeapp.BaseApplication
+import com.hashim.recipeapp.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
