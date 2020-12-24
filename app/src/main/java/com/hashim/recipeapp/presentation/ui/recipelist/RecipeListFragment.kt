@@ -24,19 +24,19 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.google.gson.Gson
 import com.hashim.recipeapp.R
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
 
+    @Inject
+    lateinit var hGson: Gson
     val hRecipeListViewModel: RecipeListViewModel by viewModels()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +45,9 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+
+                val value = hRecipeListViewModel.hRecipeListMS.value
+                Timber.d("Data List %s", hGson.toJson(value))
                 Column(
                     modifier = Modifier
                         .border(border = BorderStroke(1.dp, Color.Black))
@@ -62,7 +65,6 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
                         findNavController().navigate(R.id.action_hRecipeListFragment_to_hReciepeFragment)
                     }) {
                         Text(text = "To Recipe Fragment")
-
                     }
                 }
             }
