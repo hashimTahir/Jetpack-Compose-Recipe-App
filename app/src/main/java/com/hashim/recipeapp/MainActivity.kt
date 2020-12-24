@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.GsonBuilder
 import com.hashim.recipeapp.network.RecipeRetrofitService
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var hNavHostFragment: NavHostFragment
