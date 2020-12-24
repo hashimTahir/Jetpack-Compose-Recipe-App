@@ -23,15 +23,14 @@ class RecipeListViewModel @ViewModelInject constructor(
     val hQuery = mutableStateOf("Chicken")
 
     init {
-        hNewSearch()
     }
 
-    private fun hNewSearch() {
+     fun hNewSearch(query: String) {
         viewModelScope.launch {
             val hSearch = hRecipeRepository.hSearch(
                 token = hToken,
                 page = 1,
-                query = "chicken"
+                query = query
             )
             hRecipeListMS.value = hSearch
         }
