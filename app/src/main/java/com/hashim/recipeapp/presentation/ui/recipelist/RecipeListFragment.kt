@@ -52,6 +52,7 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
                 val value = hRecipeListViewModel.hRecipeListMS.value
 
                 val query = hRecipeListViewModel.hQuery.value
+                val selectedCategory = hRecipeListViewModel.hSelectedCategory.value
 
                 Column {
                     Surface(
@@ -79,7 +80,7 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
                                     },
                                     onImeActionPerformed = { action, softKeyboardController ->
                                         if (action == ImeAction.Search) {
-                                            hRecipeListViewModel.hNewSearch(query = query)
+                                            hRecipeListViewModel.hNewSearch()
                                             softKeyboardController?.hideSoftwareKeyboard()
 
                                         }
@@ -95,13 +96,19 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
                             }
 
 
-                            ScrollableRow(modifier = Modifier.fillMaxWidth()) {
+                            ScrollableRow(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(start = 8.dp, bottom = 8.dp)
+                            ) {
                                 for (category in hGetAllFoodCategories()) {
                                     FoodCategoryChip(
                                         category = category.value,
+                                        isSelected = selectedCategory == category,
+                                        onSelectedCategoryChanged = {
+                                            hRecipeListViewModel.hOnSelectedCategoryChanged(category = it)
+                                        },
                                         onExecuteSearch = {
-                                            hRecipeListViewModel.hOnQueryChanged(it)
-                                            hRecipeListViewModel.hNewSearch(it)
+                                            hRecipeListViewModel.hNewSearch()
                                         }
                                     )
                                 }
