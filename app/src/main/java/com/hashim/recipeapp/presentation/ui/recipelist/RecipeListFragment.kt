@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -28,14 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.gson.Gson
-import com.hashim.recipeapp.R
 import com.hashim.recipeapp.presentation.ui.components.FoodCategoryChip
 import com.hashim.recipeapp.presentation.ui.components.RecipeCard
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
+class RecipeListFragment : Fragment() {
 
     @Inject
     lateinit var hGson: Gson
@@ -95,17 +95,21 @@ class RecipeListFragment : Fragment(R.layout.fragment_recipe_list) {
 
                             }
 
+                            val hScrollState = rememberScrollState()
 
                             ScrollableRow(
                                 modifier = Modifier.fillMaxWidth()
-                                    .padding(start = 8.dp, bottom = 8.dp)
+                                    .padding(start = 8.dp, bottom = 8.dp),
+                                scrollState = hScrollState
                             ) {
+                                hScrollState.scrollTo(hRecipeListViewModel.hCategoryScroolPostion)
                                 for (category in hGetAllFoodCategories()) {
                                     FoodCategoryChip(
                                         category = category.value,
                                         isSelected = selectedCategory == category,
                                         onSelectedCategoryChanged = {
                                             hRecipeListViewModel.hOnSelectedCategoryChanged(category = it)
+                                            hRecipeListViewModel.hOnSetCategoryScroolPosition(hScrollState.value)
                                         },
                                         onExecuteSearch = {
                                             hRecipeListViewModel.hNewSearch()

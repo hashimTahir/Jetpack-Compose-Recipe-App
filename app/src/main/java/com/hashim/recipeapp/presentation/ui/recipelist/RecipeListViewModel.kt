@@ -23,6 +23,9 @@ class RecipeListViewModel @ViewModelInject constructor(
     val hQuery = mutableStateOf("")
     val hSelectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
+    var hCategoryScroolPostion: Float = 0F
+
+
     init {
         hNewSearch()
     }
@@ -44,8 +47,12 @@ class RecipeListViewModel @ViewModelInject constructor(
     }
 
     fun hOnSelectedCategoryChanged(category: String) {
-        val hNewCategory= hGetFoodCategory(category)
-        hSelectedCategory.value= hNewCategory
+        val hNewCategory = hGetFoodCategory(category)
+        hSelectedCategory.value = hNewCategory
         hOnQueryChanged(category)
+    }
+
+    fun hOnSetCategoryScroolPosition(position: Float) {
+        hCategoryScroolPostion = position
     }
 }
