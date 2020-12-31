@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hashim.recipeapp.domain.model.Recipe
 import com.hashim.recipeapp.repository.RecipeRepositoryImpl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Named
 
@@ -23,6 +24,8 @@ class RecipeListViewModel @ViewModelInject constructor(
     val hQuery = mutableStateOf("")
     val hSelectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
+    val hIsLoading = mutableStateOf(false)
+
     var hCategoryScroolPostion: Float = 0F
 
 
@@ -32,12 +35,18 @@ class RecipeListViewModel @ViewModelInject constructor(
 
     fun hNewSearch() {
         viewModelScope.launch {
-            val hSearch = hRecipeRepository.hSearch(
+            hIsLoading.value = true
+
+            hResetSearchState()
+
+            delay(2000)
+            val hSearchResult = hRecipeRepository.hSearch(
                 token = hToken,
                 page = 1,
                 query = hQuery.value
             )
-            hRecipeListMS.value = hSearch
+            hRecipeListMS.value = hSearchResult
+            hIsLoading.value = false
         }
     }
 
@@ -54,5 +63,17 @@ class RecipeListViewModel @ViewModelInject constructor(
 
     fun hOnSetCategoryScroolPosition(position: Float) {
         hCategoryScroolPostion = position
+    }
+
+    fun hClearSelectedCategory() {
+        hSelectedCategory.value = null
+    }
+
+    fun hResetSearchState() {
+        hRecipeListMS.value = listOf()
+        if (hSelectedCategory.value?.value != hQuery.value) {
+            hClearSelectedCategory()
+        }
+
     }
 }
