@@ -39,16 +39,20 @@ class RecipeListFragment : Fragment() {
                 val query = hRecipeListViewModel.hQuery.value
                 val selectedCategory = hRecipeListViewModel.hSelectedCategory.value
 
+                val categoryScrollPosition = hRecipeListViewModel.hCategoryScroolPostion
+
                 Column {
                     SearchAppBar(
                         query = query,
-                        onQueryChanged = { hRecipeListViewModel::hOnQueryChanged },
-                        onExecuteSearch = { hRecipeListViewModel::hNewSearch },
-                        scrollPostion = hRecipeListViewModel.hCategoryScroolPostion,
+                        onQueryChanged = hRecipeListViewModel::hOnQueryChanged,
+                        onExecuteSearch = hRecipeListViewModel::hNewSearch,
+                        categories = hGetAllFoodCategories(),
                         selectedCategory = selectedCategory,
-                        onSelectedCategoryChanged = { hRecipeListViewModel::hOnSelectedCategoryChanged },
-                        onSetCategoryScroolPosition = { hRecipeListViewModel::hOnSetCategoryScroolPosition }
+                        onSelectedCategoryChanged = hRecipeListViewModel::hOnSelectedCategoryChanged,
+                        scrollPosition = categoryScrollPosition,
+                        onChangeScrollPosition = hRecipeListViewModel::hOnSetCategoryScroolPosition,
                     )
+
                     LazyColumn {
                         itemsIndexed(
                             items = value

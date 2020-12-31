@@ -22,17 +22,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.hashim.recipeapp.presentation.ui.recipelist.FoodCategory
-import com.hashim.recipeapp.presentation.ui.recipelist.hGetAllFoodCategories
 
 @Composable
 fun SearchAppBar(
     query: String,
     onQueryChanged: (String) -> Unit,
     onExecuteSearch: () -> Unit,
-    scrollPostion: Float,
+    categories: List<FoodCategory>,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
-    onSetCategoryScroolPosition: (Float) -> Unit
+    scrollPosition: Float,
+    onChangeScrollPosition: (Float) -> Unit,
 ) {
     Surface(
         elevation = 8.dp,
@@ -80,14 +80,14 @@ fun SearchAppBar(
                     .padding(start = 8.dp, bottom = 8.dp),
                 scrollState = hScrollState
             ) {
-                hScrollState.scrollTo(scrollPostion)
-                for (category in hGetAllFoodCategories()) {
+                hScrollState.scrollTo(scrollPosition)
+                for (category in categories) {
                     FoodCategoryChip(
                         category = category.value,
                         isSelected = selectedCategory == category,
                         onSelectedCategoryChanged = {
+                            onChangeScrollPosition(hScrollState.value)
                             onSelectedCategoryChanged(it)
-                            onSetCategoryScroolPosition(hScrollState.value)
                         },
                         onExecuteSearch = {
                             onExecuteSearch()
