@@ -4,15 +4,13 @@
 
 package com.hashim.recipeapp.presentation.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.ConstraintSet
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun CircularProgressBar(
@@ -20,17 +18,26 @@ fun CircularProgressBar(
 ) {
 
     if (isDisplayed) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.Center
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize(),
         ) {
+
+            val hProgressBar = createRef()
+            val hTopGuideline = createGuidelineFromTop(0.3F)
             CircularProgressIndicator(
+                modifier = Modifier.constrainAs(hProgressBar) {
+
+                    top.linkTo(hTopGuideline)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
                 color = MaterialTheme.colors.primary
             )
 
-
         }
+
+
     }
+
+
 }

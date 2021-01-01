@@ -39,7 +39,7 @@ class RecipeListViewModel @ViewModelInject constructor(
 
             hResetSearchState()
 
-            delay(2000)
+            delay(10000)
             val hSearchResult = hRecipeRepository.hSearch(
                 token = hToken,
                 page = 1,
