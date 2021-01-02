@@ -7,10 +7,15 @@ package com.hashim.recipeapp.presentation.ui.components
 import androidx.compose.animation.core.*
 import androidx.compose.animation.transition
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Theaters
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
@@ -18,7 +23,6 @@ import com.hashim.recipeapp.presentation.ui.components.PulseAnimationDefinition.
 import com.hashim.recipeapp.presentation.ui.components.PulseAnimationDefinition.PulseState.H_INITIAL
 import com.hashim.recipeapp.presentation.ui.components.PulseAnimationDefinition.hPulseDefination
 import com.hashim.recipeapp.presentation.ui.components.PulseAnimationDefinition.hPulsePropKey
-import timber.log.Timber
 
 
 @Composable
@@ -30,8 +34,19 @@ fun PulsingDemo() {
         toState = H_FINAL
     )
     val pulseMagnitude = pulseAnim[hPulsePropKey]
-    Timber.d("pulsingdemo %s", pulseMagnitude)
 
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .height(55.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Image(
+            modifier = Modifier.align(Alignment.CenterVertically)
+                .height(pulseMagnitude.dp).width(pulseMagnitude.dp),
+            imageVector = Icons.Default.Theaters
+        )
+
+    }
     Canvas(
         modifier = Modifier.fillMaxWidth()
             .height(55.dp),
