@@ -11,7 +11,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Theaters
 import androidx.compose.runtime.Composable
@@ -43,7 +42,7 @@ fun PulsingDemo() {
         Image(
             modifier = Modifier.align(Alignment.CenterVertically)
                 .height(pulseMagnitude.dp).width(pulseMagnitude.dp),
-            imageVector = Icons.Default.Theaters
+            imageVector = Icons.Default.Favorite
         )
 
     }
