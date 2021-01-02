@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.gson.Gson
 import com.hashim.recipeapp.presentation.ui.components.CircularProgressBar
+import com.hashim.recipeapp.presentation.ui.components.PulsingDemo
 import com.hashim.recipeapp.presentation.ui.components.RecipeCard
 import com.hashim.recipeapp.presentation.ui.components.SearchAppBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,17 +56,18 @@ class RecipeListFragment : Fragment() {
                         scrollPosition = categoryScrollPosition,
                         onChangeScrollPosition = hRecipeListViewModel::hOnSetCategoryScroolPosition,
                     )
-                    Box(modifier = Modifier.fillMaxSize()) {
-
-                        LazyColumn {
-                            itemsIndexed(
-                                items = value
-                            ) { index, recipe ->
-                                RecipeCard(recipe = recipe, onclick = {})
-                            }
-                        }
-                        CircularProgressBar(isDisplayed = hIsLoading)
-                    }
+                    PulsingDemo()
+//                    Box(modifier = Modifier.fillMaxSize()) {
+//
+//                        LazyColumn {
+//                            itemsIndexed(
+//                                items = value
+//                            ) { index, recipe ->
+//                                RecipeCard(recipe = recipe, onclick = {})
+//                            }
+//                        }
+//                        CircularProgressBar(isDisplayed = hIsLoading)
+//                    }
                 }
             }
         }
