@@ -10,7 +10,8 @@ import com.hashim.recipeapp.presentation.ui.components.utils.ShimmerAnimationDef
 
 class ShimmerAnimationDefination(
     private val widthPx: Float,
-    private val heightPx: Float
+    private val heightPx: Float,
+    private val gradientWidth: Float
 ) {
     enum class AnimationState {
         H_START, H_END
@@ -27,8 +28,8 @@ class ShimmerAnimationDefination(
                 this[yShimmerPropKey] = 0f
             }
             state(H_END) {
-                this[xShimmerPropKey] = widthPx
-                this[yShimmerPropKey] = heightPx
+                this[xShimmerPropKey] = widthPx + gradientWidth
+                this[yShimmerPropKey] = heightPx + gradientWidth
             }
             transition(H_START to H_END) {
                 xShimmerPropKey using infiniteRepeatable(

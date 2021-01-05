@@ -22,8 +22,7 @@ fun LoadingRecipeListShimmer(
     paddding: Dp = 16.dp
 ) {
 
-    WithConstraints(
-    ) {
+    WithConstraints {
         val cardWidthPx = with(AmbientDensity.current) {
             (maxWidth - (paddding * 2)).toPx()
         }
@@ -33,9 +32,9 @@ fun LoadingRecipeListShimmer(
         val hCardAnimationDefination = remember {
             ShimmerAnimationDefination(
                 widthPx = cardWidthPx,
-                heightPx = cardHeightPx
+                heightPx = cardHeightPx,
+                gradientWidth = 200f
             )
-
         }
         val hCardShimmerTranslateDefination = transition(
             definition = hCardAnimationDefination.hShimmerTransitionDefination,
@@ -58,7 +57,8 @@ fun LoadingRecipeListShimmer(
             colors = hColors,
             cardHeight = cardHeigt,
             xShimmer = hXCardShimmer,
-            yShimmer = hYCardShimmer
+            yShimmer = hYCardShimmer,
+            padding = paddding
         )
     }
 }

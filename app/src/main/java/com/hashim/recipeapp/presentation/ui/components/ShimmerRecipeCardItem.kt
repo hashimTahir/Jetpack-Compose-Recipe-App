@@ -5,9 +5,7 @@
 package com.hashim.recipeapp.presentation.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -22,19 +20,23 @@ fun ShimmerRecipeCardItem(
     colors: List<Color>,
     cardHeight: Dp,
     xShimmer: Float,
-    yShimmer: Float
+    yShimmer: Float,
+    padding: Dp
 ) {
     val hBrush = Brush.linearGradient(
         colors,
-        start = Offset(xShimmer, yShimmer),
-        end = Offset(xShimmer + 200, yShimmer + 200)
+        start = Offset(xShimmer - 200, yShimmer - 200),
+        end = Offset(xShimmer, yShimmer)
     )
-    Surface(shape = MaterialTheme.shapes.small) {
-        Spacer(
-            modifier = Modifier.fillMaxWidth()
-                .preferredHeight(cardHeight)
-                .background(brush = hBrush)
-        )
+    Column(modifier = Modifier.padding(padding)) {
+        Surface(shape = MaterialTheme.shapes.small) {
+            Spacer(
+                modifier = Modifier.fillMaxWidth()
+                    .preferredHeight(cardHeight)
+                    .background(brush = hBrush)
+            )
 
+        }
     }
+
 }
