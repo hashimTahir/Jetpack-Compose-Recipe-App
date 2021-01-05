@@ -11,8 +11,14 @@ import com.hashim.recipeapp.presentation.ui.components.utils.ShimmerAnimationDef
 class ShimmerAnimationDefination(
     private val widthPx: Float,
     private val heightPx: Float,
-    private val gradientWidth: Float
 ) {
+
+    var gradientWidth: Float
+
+    init {
+        gradientWidth = 0.2f * heightPx
+    }
+
     enum class AnimationState {
         H_START, H_END
     }

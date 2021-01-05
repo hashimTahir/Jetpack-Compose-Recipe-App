@@ -5,6 +5,7 @@
 package com.hashim.recipeapp.presentation.ui.components
 
 import androidx.compose.animation.transition
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -33,7 +34,6 @@ fun LoadingRecipeListShimmer(
             ShimmerAnimationDefination(
                 widthPx = cardWidthPx,
                 heightPx = cardHeightPx,
-                gradientWidth = 200f
             )
         }
         val hCardShimmerTranslateDefination = transition(
@@ -52,13 +52,18 @@ fun LoadingRecipeListShimmer(
             hCardShimmerTranslateDefination[hCardAnimationDefination.xShimmerPropKey]
         val hYCardShimmer =
             hCardShimmerTranslateDefination[hCardAnimationDefination.yShimmerPropKey]
+        ScrollableColumn {
+            repeat(5) {
+                ShimmerRecipeCardItem(
+                    colors = hColors,
+                    cardHeight = cardHeigt,
+                    xShimmer = hXCardShimmer,
+                    yShimmer = hYCardShimmer,
+                    padding = paddding,
+                    gradientWidth = hCardAnimationDefination.gradientWidth
+                )
+            }
+        }
 
-        ShimmerRecipeCardItem(
-            colors = hColors,
-            cardHeight = cardHeigt,
-            xShimmer = hXCardShimmer,
-            yShimmer = hYCardShimmer,
-            padding = paddding
-        )
     }
 }
