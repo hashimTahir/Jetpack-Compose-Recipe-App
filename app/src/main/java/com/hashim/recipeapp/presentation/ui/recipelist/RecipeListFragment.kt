@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -72,7 +74,13 @@ class RecipeListFragment : Fragment() {
                         /*Box is like a frame layout
                         * children are stacked on top of one and other with priority from
                         * top to bottom*/
-                        Box(modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = MaterialTheme.colors.background
+                                )
+                        ) {
                             if (hIsLoading) {
                                 LoadingRecipeListShimmer(cardHeigt = 250.dp)
 
