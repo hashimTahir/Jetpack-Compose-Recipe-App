@@ -76,7 +76,9 @@ class RecipeListFragment : Fragment() {
                         bottomBar = {
                             BottomAppBar()
                         },
-                        drawerContent = {}
+                        drawerContent = {
+                            Drawer()
+                        }
                     ) {
                         /*Box is like a frame layout
                                               * children are stacked on top of one and other with priority from
