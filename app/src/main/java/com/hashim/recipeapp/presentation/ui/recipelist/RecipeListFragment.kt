@@ -9,17 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.*
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.hashim.recipeapp.presentation.BaseApplication
-import com.hashim.recipeapp.presentation.ui.components.SimpleSnackBar
+import com.hashim.recipeapp.presentation.ui.components.DecoupledSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,6 +33,7 @@ class RecipeListFragment : Fragment() {
     val hRecipeListViewModel: RecipeListViewModel by viewModels()
 
 
+    @ExperimentalMaterialApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,22 +41,23 @@ class RecipeListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-
-                val hIsShowing = remember { mutableStateOf(false) }
+                val hSnackbarHostState = remember { SnackbarHostState() }
                 Column {
                     Button(
                         onClick = {
-                            hIsShowing.value = true
+                            lifecycleScope.launch {
+                                hSnackbarHostState.showSnackbar(
+                                    message = "A SanckBar",
+                                    actionLabel = "Hide",
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
                         }
                     ) {
                         Text(text = "Show SnackBar")
                     }
-                    SimpleSnackBar(
-                        isShowing = hIsShowing.value,
-                        onHideSnackBar = {
-                            hIsShowing.value = false
-                        }
-                    )
+                    DecoupledSnackBar(snackbarHostState = hSnackbarHostState)
+
                 }
 
 //                AppTheme(
