@@ -27,6 +27,7 @@ import com.google.gson.Gson
 import com.hashim.recipeapp.presentation.BaseApplication
 import com.hashim.recipeapp.presentation.theme.AppTheme
 import com.hashim.recipeapp.presentation.ui.components.*
+import com.hashim.recipeapp.presentation.ui.components.utils.SnackbarController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,6 +41,8 @@ class RecipeListFragment : Fragment() {
     @Inject
     lateinit var hApplication: BaseApplication
     val hRecipeListViewModel: RecipeListViewModel by viewModels()
+
+    private val hSnackBarController = SnackbarController(lifecycleScope)
 
 
     @ExperimentalMaterialApi
@@ -75,12 +78,12 @@ class RecipeListFragment : Fragment() {
                                     if (hRecipeListViewModel.hSelectedCategory
                                             .value?.value == "Milk"
                                     ) {
-                                        lifecycleScope.launch {
-                                            hScaffoldState.snackbarHostState
-                                                .showSnackbar(
-                                                    message = "Invalid Category : Milk",
-                                                    actionLabel = "Hide",
-                                                )
+                                        hSnackBarController.hGetScope().launch {
+                                            hSnackBarController.hShowSnackbar(
+                                                scaffoldState = hScaffoldState,
+                                                message = "Invalid Category : Milk",
+                                                actionLabel = "Hide",
+                                            )
                                         }
                                     } else {
                                         hRecipeListViewModel.hNewSearch()
