@@ -13,8 +13,10 @@ import com.hashim.recipeapp.domain.model.Recipe
 import com.hashim.recipeapp.repository.RecipeRepositoryImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Named
 
+const val H_PAGE_SIZE = 30
 
 class RecipeListViewModel @ViewModelInject constructor(
     private val hRecipeRepository: RecipeRepositoryImpl,
@@ -23,6 +25,8 @@ class RecipeListViewModel @ViewModelInject constructor(
     val hRecipeListMS: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
     val hQuery = mutableStateOf("")
     val hSelectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
+    val hPage = mutableStateOf(1)
+    private var hRecipeListScrollPosition = 0
 
     val hIsLoading = mutableStateOf(false)
 
@@ -50,8 +54,36 @@ class RecipeListViewModel @ViewModelInject constructor(
         }
     }
 
+    fun hGetNextPage() {
+        viewModelScope.launch {
+            if ((hRecipeListScrollPosition + 1) >= (hPage.value * H_PAGE_SIZE)) {
+                hIsLoading.value = true
+                hIncrementPage()
+                Timber.d("Next Page triggered %s", hPage.value)
+
+                delay(1000)
+                if (hPage.value > 1) {
+                    val hResult = hRecipeRepository.hSearch(
+                        token = hToken,
+                        page = hPage.value,
+                        query = hQuery.value
+                    )
+                    hAppendRecipeList(hResult)
+                }
+                hIsLoading.value = false
+            }
+        }
+    }
+
     fun hOnQueryChanged(query: String) {
         hQuery.value = query
+
+    }
+
+    fun hAppendRecipeList(recipeList: List<Recipe>) {
+        val hCurrentList = ArrayList(hRecipeListMS.value)
+        hCurrentList.addAll(recipeList)
+        hRecipeListMS.value = hCurrentList
 
     }
 
@@ -71,9 +103,19 @@ class RecipeListViewModel @ViewModelInject constructor(
 
     fun hResetSearchState() {
         hRecipeListMS.value = listOf()
+        hPage.value = 1
+        OnChangeRecipeScrollPosition(0)
         if (hSelectedCategory.value?.value != hQuery.value) {
             hClearSelectedCategory()
         }
 
+    }
+
+     fun OnChangeRecipeScrollPosition(position: Int) {
+        hRecipeListScrollPosition = position
+    }
+
+    private fun hIncrementPage() {
+        hPage.value = hPage.value++
     }
 }

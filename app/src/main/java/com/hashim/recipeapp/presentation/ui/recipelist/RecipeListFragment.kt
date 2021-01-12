@@ -58,11 +58,13 @@ class RecipeListFragment : Fragment() {
                 AppTheme(
                     darkTheme = hApplication.hIsdark.value
                 ) {
-                    val value = hRecipeListViewModel.hRecipeListMS.value
+                    val hRecipeList = hRecipeListViewModel.hRecipeListMS.value
                     val query = hRecipeListViewModel.hQuery.value
                     val selectedCategory = hRecipeListViewModel.hSelectedCategory.value
                     val categoryScrollPosition = hRecipeListViewModel.hCategoryScroolPostion
                     val hIsLoading = hRecipeListViewModel.hIsLoading.value
+
+                    val hPage = hRecipeListViewModel.hPage.value
 
                     /*Scaffold is used to add top, bottom, and drawers like componets
                     * with compose.
@@ -114,14 +116,18 @@ class RecipeListFragment : Fragment() {
                                     color = MaterialTheme.colors.surface
                                 )
                         ) {
-                            if (hIsLoading) {
+                            if (hIsLoading && hRecipeList.isEmpty()) {
                                 LoadingRecipeListShimmer(cardHeigt = 250.dp)
 
                             } else {
                                 LazyColumn {
                                     itemsIndexed(
-                                        items = value
+                                        items = hRecipeList
                                     ) { index, recipe ->
+                                        hRecipeListViewModel.OnChangeRecipeScrollPosition(index)
+                                        if (index + 1 >= (hPage * H_PAGE_SIZE) && !hIsLoading) {
+                                            hRecipeListViewModel.hGetNextPage()
+                                        }
                                         RecipeCard(recipe = recipe, onclick = {})
                                     }
                                 }
