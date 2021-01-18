@@ -28,6 +28,7 @@ import com.hashim.recipeapp.presentation.BaseApplication
 import com.hashim.recipeapp.presentation.theme.AppTheme
 import com.hashim.recipeapp.presentation.ui.components.*
 import com.hashim.recipeapp.presentation.ui.components.utils.SnackbarController
+import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -88,7 +89,7 @@ class RecipeListFragment : Fragment() {
                                             )
                                         }
                                     } else {
-                                        hRecipeListViewModel.hNewSearch()
+                                        hRecipeListViewModel.hOnTriggerEvent(hNewSearchEvent)
                                     }
                                 },
                                 categories = hGetAllFoodCategories(),
@@ -126,7 +127,8 @@ class RecipeListFragment : Fragment() {
                                     ) { index, recipe ->
                                         hRecipeListViewModel.OnChangeRecipeScrollPosition(index)
                                         if (index + 1 >= (hPage * H_PAGE_SIZE) && !hIsLoading) {
-                                            hRecipeListViewModel.hGetNextPage()
+                                            hRecipeListViewModel.hOnTriggerEvent(hNextPageEvent)
+
                                         }
                                         RecipeCard(recipe = recipe, onclick = {})
                                     }

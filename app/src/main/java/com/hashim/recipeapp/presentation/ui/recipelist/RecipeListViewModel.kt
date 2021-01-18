@@ -10,6 +10,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hashim.recipeapp.domain.model.Recipe
+import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.hNewSearchEvent
+import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.hNextPageEvent
 import com.hashim.recipeapp.repository.RecipeRepositoryImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,45 +36,63 @@ class RecipeListViewModel @ViewModelInject constructor(
 
 
     init {
-        hNewSearch()
+        hOnTriggerEvent(hNewSearchEvent)
     }
 
-    fun hNewSearch() {
+    fun hOnTriggerEvent(event: RecipeListEvent) {
         viewModelScope.launch {
-            hIsLoading.value = true
-
-            hResetSearchState()
-
-            delay(3000)
-            val hSearchResult = hRecipeRepository.hSearch(
-                token = hToken,
-                page = 1,
-                query = hQuery.value
-            )
-            hRecipeListMS.value = hSearchResult
-            hIsLoading.value = false
-        }
-    }
-
-    fun hGetNextPage() {
-        viewModelScope.launch {
-            if ((hRecipeListScrollPosition + 1) >= (hPage.value * H_PAGE_SIZE)) {
-                hIsLoading.value = true
-                hIncrementPage()
-                Timber.d("Next Page triggered %s", hPage.value)
-
-                delay(1000)
-                if (hPage.value > 1) {
-                    val hResult = hRecipeRepository.hSearch(
-                        token = hToken,
-                        page = hPage.value,
-                        query = hQuery.value
-                    )
-                    hAppendRecipeList(hResult)
+            try {
+                when (event) {
+                    is hNewSearchEvent -> {
+                        hNewSearch()
+                    }
+                    is hNextPageEvent -> {
+                        hGetNextPage()
+                    }
                 }
-                hIsLoading.value = false
+
+            } catch (e: Exception) {
+                Timber.d("Exception $e")
             }
         }
+    }
+
+    private suspend fun hNewSearch() {
+
+        hIsLoading.value = true
+
+        hResetSearchState()
+
+        delay(3000)
+        val hSearchResult = hRecipeRepository.hSearch(
+            token = hToken,
+            page = 1,
+            query = hQuery.value
+        )
+        hRecipeListMS.value = hSearchResult
+        hIsLoading.value = false
+
+    }
+
+    private suspend fun hGetNextPage() {
+
+        if ((hRecipeListScrollPosition + 1) >= (hPage.value * H_PAGE_SIZE)) {
+            hIsLoading.value = true
+            hIncrementPage()
+            Timber.d("Next Page triggered %s", hPage.value)
+
+            delay(1000)
+            if (hPage.value > 1) {
+                val hResult = hRecipeRepository.hSearch(
+                    token = hToken,
+                    page = hPage.value,
+                    query = hQuery.value
+                )
+                hAppendRecipeList(hResult)
+            }
+            hIsLoading.value = false
+        }
+
     }
 
     fun hOnQueryChanged(query: String) {
@@ -111,7 +131,7 @@ class RecipeListViewModel @ViewModelInject constructor(
 
     }
 
-     fun OnChangeRecipeScrollPosition(position: Int) {
+    fun OnChangeRecipeScrollPosition(position: Int) {
         hRecipeListScrollPosition = position
     }
 
