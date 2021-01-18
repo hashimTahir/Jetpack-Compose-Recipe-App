@@ -7,4 +7,5 @@ package com.hashim.recipeapp.presentation.ui.recipelist
 sealed class RecipeListEvent {
     object hNewSearchEvent : RecipeListEvent()
     object hNextPageEvent : RecipeListEvent()
+    object hRestoreStateEvent : RecipeListEvent()
 }

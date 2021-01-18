@@ -6,12 +6,13 @@ package com.hashim.recipeapp.presentation.ui.recipelist
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hashim.recipeapp.domain.model.Recipe
-import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.hNewSearchEvent
-import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.hNextPageEvent
+import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.*
 import com.hashim.recipeapp.repository.RecipeRepositoryImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,9 +21,16 @@ import javax.inject.Named
 
 const val H_PAGE_SIZE = 30
 
+
+const val H_STATE_KEY_PAGE = "PAGE.KEY"
+const val H_STATE_KEY_QUERY = "QUERY.KEY"
+const val H_STATE_KEY_LIST_POSITION = "LIST.POSITION"
+const val H_STATE_KEY_SELECTED_CATEGORY = "STATE.QUERY"
+
 class RecipeListViewModel @ViewModelInject constructor(
     private val hRecipeRepository: RecipeRepositoryImpl,
-    private @Named("auth_token") val hToken: String
+    private @Named("auth_token") val hToken: String,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     val hRecipeListMS: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
     val hQuery = mutableStateOf("")
@@ -36,7 +44,26 @@ class RecipeListViewModel @ViewModelInject constructor(
 
 
     init {
-        hOnTriggerEvent(hNewSearchEvent)
+        savedStateHandle.get<Int>(H_STATE_KEY_PAGE)?.let { page ->
+            hSetPage(page = page)
+        }
+        savedStateHandle.get<String>(H_STATE_KEY_QUERY)?.let { query ->
+            hSetQuery(query = query)
+        }
+        savedStateHandle.get<Int>(H_STATE_KEY_LIST_POSITION)?.let { postition ->
+            hSetListScrollPosition(position = postition)
+        }
+        savedStateHandle.get<FoodCategory>(H_STATE_KEY_SELECTED_CATEGORY)?.let { category ->
+            hSetSelectedCategory(category = category)
+        }
+
+        if (hRecipeListScrollPosition != 0) {
+            hOnTriggerEvent(hRestoreStateEvent)
+        } else {
+            hOnTriggerEvent(hNewSearchEvent)
+
+        }
+
     }
 
     fun hOnTriggerEvent(event: RecipeListEvent) {
@@ -49,10 +76,30 @@ class RecipeListViewModel @ViewModelInject constructor(
                     is hNextPageEvent -> {
                         hGetNextPage()
                     }
+                    is hRestoreStateEvent -> {
+                        hRestoreState()
+                    }
                 }
 
             } catch (e: Exception) {
                 Timber.d("Exception $e")
+            }
+        }
+    }
+
+    private suspend fun hRestoreState() {
+        hIsLoading.value = true
+        val hResults: MutableList<Recipe> = mutableListOf()
+        for (p in 1..hPage.value) {
+            val result = hRecipeRepository.hSearch(
+                token = hToken,
+                page = p,
+                query = hQuery.value
+            )
+            hResults.addAll(result)
+            if (p == hPage.value) {
+                hRecipeListMS.value = hResults
+                hIsLoading.value = false
             }
         }
     }
@@ -96,7 +143,7 @@ class RecipeListViewModel @ViewModelInject constructor(
     }
 
     fun hOnQueryChanged(query: String) {
-        hQuery.value = query
+        hSetQuery(query = query)
 
     }
 
@@ -109,7 +156,7 @@ class RecipeListViewModel @ViewModelInject constructor(
 
     fun hOnSelectedCategoryChanged(category: String) {
         val hNewCategory = hGetFoodCategory(category)
-        hSelectedCategory.value = hNewCategory
+        hSetSelectedCategory(hNewCategory)
         hOnQueryChanged(category)
     }
 
@@ -118,7 +165,7 @@ class RecipeListViewModel @ViewModelInject constructor(
     }
 
     fun hClearSelectedCategory() {
-        hSelectedCategory.value = null
+        hSetSelectedCategory(null)
     }
 
     fun hResetSearchState() {
@@ -132,10 +179,30 @@ class RecipeListViewModel @ViewModelInject constructor(
     }
 
     fun OnChangeRecipeScrollPosition(position: Int) {
-        hRecipeListScrollPosition = position
+        hSetListScrollPosition(position = position)
     }
 
     private fun hIncrementPage() {
-        hPage.value = hPage.value++
+        hSetPage(hPage.value + 1)
+    }
+
+    private fun hSetListScrollPosition(position: Int) {
+        hRecipeListScrollPosition = position
+        savedStateHandle.set(H_STATE_KEY_LIST_POSITION, position)
+    }
+
+    private fun hSetPage(page: Int) {
+        hPage.value = page
+        savedStateHandle.set(H_STATE_KEY_PAGE, page)
+    }
+
+    private fun hSetSelectedCategory(category: FoodCategory?) {
+        hSelectedCategory.value = category
+        savedStateHandle.set(H_STATE_KEY_SELECTED_CATEGORY, category)
+    }
+
+    private fun hSetQuery(query: String) {
+        hQuery.value = query
+        savedStateHandle.set(H_STATE_KEY_QUERY, query)
     }
 }
