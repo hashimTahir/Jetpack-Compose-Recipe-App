@@ -21,12 +21,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import com.hashim.recipeapp.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class ReciepeFragment : Fragment() {
+    private var hRecicpeId: Int = -1
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.getInt(Constants.H_RECIPE_ID)?.let {
+            hRecicpeId = it
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +50,7 @@ class ReciepeFragment : Fragment() {
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Recipe Fragment",
+                        text = "Recipe Fragment with id  $hRecicpeId",
                         style = TextStyle(
                             fontSize = TextUnit.Sp(21)
                         )
