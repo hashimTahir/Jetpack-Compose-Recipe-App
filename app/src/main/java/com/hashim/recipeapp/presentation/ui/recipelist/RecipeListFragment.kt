@@ -8,26 +8,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.google.gson.Gson
 import com.hashim.recipeapp.presentation.BaseApplication
 import com.hashim.recipeapp.presentation.theme.AppTheme
-import com.hashim.recipeapp.presentation.ui.components.*
+import com.hashim.recipeapp.presentation.ui.components.RecipeListComposable
+import com.hashim.recipeapp.presentation.ui.components.SearchAppBar
 import com.hashim.recipeapp.presentation.ui.components.utils.SnackbarController
+import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.hNewSearchEvent
+import com.hashim.recipeapp.presentation.ui.recipelist.RecipeListEvent.hNextPageEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -88,7 +84,7 @@ class RecipeListFragment : Fragment() {
                                             )
                                         }
                                     } else {
-                                        hRecipeListViewModel.hNewSearch()
+                                        hRecipeListViewModel.hOnTriggerEvent(hNewSearchEvent)
                                     }
                                 },
                                 categories = hGetAllFoodCategories(),
@@ -106,46 +102,22 @@ class RecipeListFragment : Fragment() {
                             hScaffoldState.snackbarHostState
                         }
                     ) {
-                        /*Box is like a frame layout
-                                              * children are stacked on top of one and other with priority from
-                                              * top to bottom*/
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    color = MaterialTheme.colors.surface
-                                )
-                        ) {
-                            if (hIsLoading && hRecipeList.isEmpty()) {
-                                LoadingRecipeListShimmer(cardHeigt = 250.dp)
+                        RecipeListComposable(
+                            isLoading = hIsLoading,
+                            recipeList = hRecipeList,
+                            onChangeRecipeScrollPosition = {
+                                hRecipeListViewModel::OnChangeRecipeScrollPosition
+                            },
+                            page = hPage,
+                            oNTriggerEvent = {
+                                hRecipeListViewModel.hOnTriggerEvent(hNextPageEvent)
+                            },
+                            scaffoldState = hScaffoldState,
+                            snackbarController = hSnackBarController,
+                            navController = findNavController()
+                        )
 
-                            } else {
-                                LazyColumn {
-                                    itemsIndexed(
-                                        items = hRecipeList
-                                    ) { index, recipe ->
-                                        hRecipeListViewModel.OnChangeRecipeScrollPosition(index)
-                                        if (index + 1 >= (hPage * H_PAGE_SIZE) && !hIsLoading) {
-                                            hRecipeListViewModel.hGetNextPage()
-                                        }
-                                        RecipeCard(recipe = recipe, onclick = {})
-                                    }
-                                }
-                            }
 
-                            CircularProgressBar(isDisplayed = hIsLoading)
-
-                            HsnackBar(
-                                snackbarHostState = hScaffoldState.snackbarHostState,
-                                onDismiss = {
-                                    hScaffoldState.snackbarHostState
-                                        .currentSnackbarData?.dismiss()
-                                },
-                                modifier = Modifier.align(
-                                    Alignment.BottomCenter
-                                )
-                            )
-                        }
                     }
                 }
 

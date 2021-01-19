@@ -7,6 +7,7 @@ package com.hashim.recipeapp
 class Constants {
     companion object  {
         const val hTag = "hashimTimberTags %s"
+        const val H_RECIPE_ID = "hRecipeId"
     }
 
 }

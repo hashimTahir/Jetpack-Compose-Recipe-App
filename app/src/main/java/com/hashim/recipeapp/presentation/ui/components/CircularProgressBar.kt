@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun CircularProgressBar(
     isDisplayed: Boolean,
+    verticalBias: Float
 ) {
 
     if (isDisplayed) {
@@ -23,7 +24,7 @@ fun CircularProgressBar(
         ) {
 
             val hProgressBar = createRef()
-            val hTopGuideline = createGuidelineFromTop(0.3F)
+            val hTopGuideline = createGuidelineFromTop(verticalBias)
             CircularProgressIndicator(
                 modifier = Modifier.constrainAs(hProgressBar) {
 
