@@ -86,7 +86,7 @@ fun RecipeListComposable(
             }
         }
 
-        CircularProgressBar(isDisplayed = isLoading)
+        CircularProgressBar(isDisplayed = isLoading,0.3F)
 
         HsnackBar(
             snackbarHostState = scaffoldState.snackbarHostState,

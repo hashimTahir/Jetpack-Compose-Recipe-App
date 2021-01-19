@@ -66,6 +66,5 @@ class RecipeViewModel @ViewModelInject constructor(
             H_STATE_KEY_RECIPE, hRecipe.id
         )
         hIsLodaing.value = false
-        Timber.d("Data Retrieved %s", hRecipe.toString())
     }
 }
