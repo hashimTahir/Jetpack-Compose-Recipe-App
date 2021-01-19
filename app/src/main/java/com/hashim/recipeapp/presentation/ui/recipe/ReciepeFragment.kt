@@ -21,19 +21,20 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.hashim.recipeapp.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class ReciepeFragment : Fragment() {
-    private var hRecicpeId: Int = -1
 
+    private val hRecipeViewModel: RecipeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getInt(Constants.H_RECIPE_ID)?.let {
-            hRecicpeId = it
+            hRecipeViewModel.hOnTriggerEvent(RecipeEvent.hGetRecipeEvent(it))
         }
     }
 
@@ -44,19 +45,22 @@ class ReciepeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+
+                val hLoading = hRecipeViewModel.hIsLodaing.value
+                val hRecipe = hRecipeViewModel.hRecipeMS.value
+
                 Column(
                     modifier = Modifier
                         .border(border = BorderStroke(1.dp, Color.Black))
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Recipe Fragment with id  $hRecicpeId",
+                        text = "Recipe Fragment with id  ${hRecipe.toString()}",
                         style = TextStyle(
                             fontSize = TextUnit.Sp(21)
                         )
                     )
                     Spacer(modifier = Modifier.padding(10.dp))
-
                 }
             }
         }
