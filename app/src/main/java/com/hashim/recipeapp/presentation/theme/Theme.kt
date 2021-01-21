@@ -4,11 +4,16 @@
 
 package com.hashim.recipeapp.presentation.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.hashim.recipeapp.presentation.ui.components.CircularProgressBar
+import com.hashim.recipeapp.presentation.ui.components.HsnackBar
 
 
 private val LightThemeColors = lightColors(
@@ -39,9 +44,12 @@ private val DarkThemeColors = darkColors(
     onSurface = Color.White,
 )
 
+@ExperimentalMaterialApi
 @Composable
 fun AppTheme(
     darkTheme: Boolean,
+    displayProgressBar: Boolean,
+    scafoldState: ScaffoldState,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
@@ -49,6 +57,26 @@ fun AppTheme(
         typography = QuickSandTypography,
         shapes = AppShapes
     ) {
-        content()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(if (!darkTheme) Grey1 else Color.Black)
+        ) {
+            content()
+            CircularProgressBar(isDisplayed = displayProgressBar, 0.3F)
+
+            HsnackBar(
+                snackbarHostState = scafoldState.snackbarHostState,
+                onDismiss = {
+                    scafoldState.snackbarHostState
+                        .currentSnackbarData?.dismiss()
+                },
+                modifier = Modifier.align(
+                    Alignment.BottomCenter
+                )
+            )
+        }
+
+
     }
 }

@@ -49,24 +49,26 @@ class RecipeListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+                val hRecipeList = hRecipeListViewModel.hRecipeListMS.value
+                val query = hRecipeListViewModel.hQuery.value
+                val selectedCategory = hRecipeListViewModel.hSelectedCategory.value
+                val categoryScrollPosition = hRecipeListViewModel.hCategoryScroolPostion
+                val hIsLoading = hRecipeListViewModel.hIsLoading.value
+                val hScaffoldState = rememberScaffoldState()
 
+                val hPage = hRecipeListViewModel.hPage.value
 
                 AppTheme(
-                    darkTheme = hApplication.hIsdark.value
+                    darkTheme = hApplication.hIsdark.value,
+                    displayProgressBar = hIsLoading,
+                    scafoldState = hScaffoldState
                 ) {
-                    val hRecipeList = hRecipeListViewModel.hRecipeListMS.value
-                    val query = hRecipeListViewModel.hQuery.value
-                    val selectedCategory = hRecipeListViewModel.hSelectedCategory.value
-                    val categoryScrollPosition = hRecipeListViewModel.hCategoryScroolPostion
-                    val hIsLoading = hRecipeListViewModel.hIsLoading.value
 
-                    val hPage = hRecipeListViewModel.hPage.value
 
                     /*Scaffold is used to add top, bottom, and drawers like componets
                     * with compose.
                     * content goes in content function*/
 
-                    val hScaffoldState = rememberScaffoldState()
                     Scaffold(
                         topBar = {
                             SearchAppBar(
@@ -116,8 +118,6 @@ class RecipeListFragment : Fragment() {
                             snackbarController = hSnackBarController,
                             navController = findNavController()
                         )
-
-
                     }
                 }
 
