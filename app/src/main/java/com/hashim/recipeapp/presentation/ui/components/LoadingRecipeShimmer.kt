@@ -73,7 +73,7 @@ fun LoadingRecipeShimmer(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .preferredHeight(cardHeigt / 10)
+                            .preferredHeight(cardHeigt )
                             .background(brush = hBrush)
                     )
                 }

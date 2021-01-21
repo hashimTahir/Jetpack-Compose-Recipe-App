@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,7 +62,11 @@ class ReciepeFragment : Fragment() {
                 val hRecipe = hRecipeViewModel.hRecipeMS.value
                 val hScafoldState = rememberScaffoldState()
 
-                AppTheme(darkTheme = hApplication.hIsdark.value) {
+                AppTheme(
+                    darkTheme = hApplication.hIsdark.value,
+                    displayProgressBar = hLoading,
+                    scafoldState = hScafoldState
+                ) {
                     Scaffold(
                         scaffoldState = hScafoldState,
                         snackbarHost = {
@@ -73,7 +76,7 @@ class ReciepeFragment : Fragment() {
                         Box(modifier = Modifier.fillMaxSize())
                         {
                             if (hLoading && hRecipe == null) {
-                               LoadingRecipeShimmer(cardHeigt = 260.dp)
+                                LoadingRecipeShimmer(cardHeigt = 260.dp)
                             } else {
                                 hRecipe?.let {
                                     if (it.id == 1) {
@@ -87,14 +90,6 @@ class ReciepeFragment : Fragment() {
                                     }
                                 }
                             }
-                            CircularProgressBar(isDisplayed = hLoading, verticalBias = 0.3F)
-                            HsnackBar(
-                                snackbarHostState = hScafoldState.snackbarHostState,
-                                onDismiss = {
-                                    hScafoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                                }, modifier = Modifier.align(Alignment.BottomCenter)
-                            )
-
                         }
 
                     }

@@ -86,18 +86,7 @@ fun RecipeListComposable(
             }
         }
 
-        CircularProgressBar(isDisplayed = isLoading,0.3F)
 
-        HsnackBar(
-            snackbarHostState = scaffoldState.snackbarHostState,
-            onDismiss = {
-                scaffoldState.snackbarHostState
-                    .currentSnackbarData?.dismiss()
-            },
-            modifier = Modifier.align(
-                Alignment.BottomCenter
-            )
-        )
     }
 
 }
